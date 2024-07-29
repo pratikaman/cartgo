@@ -1,5 +1,7 @@
-import 'package:cartgo/colors.dart';
+import 'package:cartgo/constants/colors.dart';
 import 'package:cartgo/login.dart';
+import 'package:cartgo/routing/app_router.dart';
+import 'package:cartgo/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -12,7 +14,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'e-Shop',
       theme: ThemeData(
@@ -21,7 +23,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: kBackgoundColor,
         textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme),
       ),
-      home: const LoginScreen(),
+      routerConfig: router,
     );
   }
 }

@@ -9,18 +9,22 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen>
+class _SignUpScreenState extends State<SignUpScreen>
     with EmailAndPasswordValidators {
-      
-  final _loginFormKey = GlobalKey<FormState>();
 
+
+  ///    
+  final _signUpFormKey = GlobalKey<FormState>();
+
+  ///
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -28,6 +32,7 @@ class _LoginScreenState extends State<LoginScreen>
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _nameController.dispose();
     super.dispose();
   }
 
@@ -53,12 +58,39 @@ class _LoginScreenState extends State<LoginScreen>
       body: Padding(
         padding: const EdgeInsets.fromLTRB(10, 0, 10, 30),
         child: Form(
-          key: _loginFormKey,
+          key: _signUpFormKey,
           child: Column(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Spacer(),
+
+              /// name field
+              TextFormField(
+                controller: _nameController,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  hintText: "Name",
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (text) {
+                  if (text == null || text.isEmpty) {
+                    return 'Can\'t be empty';
+                  }
+                  if (text.length < 4) {
+                    return 'Too short';
+                  }
+                  return null;
+                },
+              ),
+
+              ///
+              gapH20,
 
               /// email field
               TextFormField(
@@ -82,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen>
                       editingValidator: EmailEditingRegexValidator()),
                 ],
               ),
-              
+
               ///
               gapH20,
 
@@ -100,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen>
                 ),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: (password) => passwordErrorText(
-                    password ?? '', EmailPasswordSignInFormType.logIn),
+                    password ?? '', EmailPasswordSignInFormType.register),
                 obscureText: true,
                 autocorrect: false,
                 obscuringCharacter: "*",
@@ -109,11 +141,7 @@ class _LoginScreenState extends State<LoginScreen>
               const Spacer(),
 
               ///
-              SubmitBtn(
-                  text: "Login",
-                  onPressed: () {
-                    context.goNamed(AppRoute.home.name);
-                  }),
+              SubmitBtn(text: "Signup", onPressed: () {}),
 
               ///
               Container(
@@ -123,16 +151,16 @@ class _LoginScreenState extends State<LoginScreen>
                     style: const TextStyle(fontSize: 20),
                     children: [
                       const TextSpan(
-                        text: 'New here? ',
+                        text: 'Already have an account? ',
                         style: TextStyle(color: Colors.black),
                       ),
                       TextSpan(
-                        text: 'Signup',
+                        text: 'Login',
                         style: const TextStyle(
                             color: kPrimaryColor, fontWeight: FontWeight.bold),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            context.goNamed(AppRoute.signup.name);
+                            context.goNamed(AppRoute.login.name);
                           },
                       ),
                     ],
