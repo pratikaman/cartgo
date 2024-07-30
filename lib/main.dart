@@ -1,7 +1,5 @@
 import 'package:cartgo/constants/colors.dart';
-import 'package:cartgo/login.dart';
 import 'package:cartgo/routing/app_router.dart';
-import 'package:cartgo/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

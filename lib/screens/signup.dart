@@ -18,9 +18,7 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen>
     with EmailAndPasswordValidators {
-
-
-  ///    
+  ///
   final _signUpFormKey = GlobalKey<FormState>();
 
   ///
@@ -39,7 +37,6 @@ class _SignUpScreenState extends State<SignUpScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       ///
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -48,7 +45,7 @@ class _SignUpScreenState extends State<SignUpScreen>
           style: TextStyle(
             color: kPrimaryColor,
             fontWeight: FontWeight.bold,
-            fontSize: 32,
+            fontSize: Sizes.p32,
           ),
         ),
         backgroundColor: kBackgoundColor,
@@ -74,7 +71,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                   hintText: "Name",
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(Sizes.p8),
                   ),
                 ),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -101,7 +98,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                   hintText: "Email",
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(Sizes.p8),
                   ),
                 ),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -127,7 +124,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                   hintText: "Password",
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(Sizes.p8),
                   ),
                 ),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -135,7 +132,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                     password ?? '', EmailPasswordSignInFormType.register),
                 obscureText: true,
                 autocorrect: false,
-                obscuringCharacter: "*",
+                obscuringCharacter: "●",
                 textInputAction: TextInputAction.done,
               ),
               const Spacer(),
@@ -145,10 +142,10 @@ class _SignUpScreenState extends State<SignUpScreen>
 
               ///
               Container(
-                margin: const EdgeInsets.only(top: 10),
+                margin: const EdgeInsets.only(top: Sizes.p12),
                 child: RichText(
                   text: TextSpan(
-                    style: const TextStyle(fontSize: 20),
+                    style: const TextStyle(fontSize: Sizes.p20),
                     children: [
                       const TextSpan(
                         text: 'Already have an account? ',
@@ -157,7 +154,9 @@ class _SignUpScreenState extends State<SignUpScreen>
                       TextSpan(
                         text: 'Login',
                         style: const TextStyle(
-                            color: kPrimaryColor, fontWeight: FontWeight.bold),
+                          color: kPrimaryColor,
+                          fontWeight: FontWeight.bold,
+                        ),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
                             context.goNamed(AppRoute.login.name);

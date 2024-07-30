@@ -1,6 +1,6 @@
-import 'package:cartgo/home_screen.dart';
-import 'package:cartgo/login.dart';
-import 'package:cartgo/signup.dart';
+import 'package:cartgo/screens/home_screen.dart';
+import 'package:cartgo/screens/login.dart';
+import 'package:cartgo/screens/signup.dart';
 import 'package:go_router/go_router.dart';
 
 enum AppRoute {
