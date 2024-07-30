@@ -154,11 +154,16 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   Future<void> signIn() async {
+
+    ///
     if (!_loginFormKey.currentState!.validate()) return;
 
+    ///
     setState(() {
       _isInProgress = true;
     });
+
+    ///
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text.trim(),
@@ -174,6 +179,8 @@ class _LoginScreenState extends State<LoginScreen>
         );
       }
     }
+
+    ///
     setState(() {
       _isInProgress = false;
     });

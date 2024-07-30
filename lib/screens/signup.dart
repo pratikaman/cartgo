@@ -193,20 +193,25 @@ class _SignUpScreenState extends State<SignUpScreen>
 
     ///
     try {
-      UserCredential userCredential =
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+
+
+      ///
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
+      await FirebaseAuth.instance.signOut();
 
-      // The user is now signed in, which will trigger authStateChanges
-      User? user = userCredential.user;
 
       ///
-      if (user != null && mounted) {
-        context.goNamed(AppRoute.products.name);
-      }
+      if (mounted) {
+        CustomSnackBar.show(
+          context,
+          message: 'User registered successfully!',
+        );
 
+        context.goNamed(AppRoute.home.name);
+      }
     } on FirebaseAuthException catch (e) {
       debugPrint('Error: $e');
 

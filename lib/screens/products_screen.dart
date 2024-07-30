@@ -204,6 +204,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
         ),
         backgroundColor: kPrimaryColor,
         actions: [
+
+          ///
           IconButton(
             icon: const Icon(
               Icons.logout,
