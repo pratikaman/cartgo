@@ -1,7 +1,6 @@
 import 'package:cartgo/controllers/auth_controller.dart';
 import 'package:cartgo/screens/login.dart';
 import 'package:cartgo/screens/products_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

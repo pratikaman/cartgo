@@ -1,5 +1,6 @@
 import 'package:cartgo/controllers/auth_controller.dart';
 import 'package:cartgo/constants/colors.dart';
+import 'package:cartgo/controllers/products_provider.dart';
 import 'package:cartgo/routing/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,7 +20,8 @@ void main() async {
   ///
   runApp(MultiProvider(
     providers: [
-         ChangeNotifierProvider(create: (context) => AuthenticationController()),
+      ChangeNotifierProvider(create: (context) => AuthenticationController()),
+      ChangeNotifierProvider(create: (_) => ProductProvider()),
     ],
     child: const MyApp(),
   ));
