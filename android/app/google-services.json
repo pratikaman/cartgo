@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "111869191989",
+    "project_id": "cartgo-1e3ab",
+    "storage_bucket": "cartgo-1e3ab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:111869191989:android:dff8ed566d3b537b71ce7c",
+        "android_client_info": {
+          "package_name": "com.example.cartgo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-c9e9WFwlLLojCJPryTMxqob54oo_Hwg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

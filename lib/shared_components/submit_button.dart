@@ -1,15 +1,18 @@
+import 'package:cartgo/constants/app_sizes.dart';
 import 'package:cartgo/constants/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+// import 'package:go_router/go_router.dart';
 
 class SubmitBtn extends StatefulWidget {
   final String text;
+  final bool isInProgress;
   final VoidCallback onPressed;
 
   const SubmitBtn({
     super.key,
     required this.text,
     required this.onPressed,
+    required this.isInProgress,
   });
 
   @override
@@ -31,13 +34,15 @@ class _SubmitBtnState extends State<SubmitBtn> {
           borderRadius: BorderRadius.circular(8),
         ),
       ),
-      child: Text(
-        widget.text,
-        style: const TextStyle(
-          fontSize: 20,
-          color: Colors.white,
-        ),
-      ),
+      child: widget.isInProgress
+          ? const CircularProgressIndicator(color: kWhiteColor)
+          : Text(
+              widget.text,
+              style: const TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+              ),
+            ),
     );
   }
 }

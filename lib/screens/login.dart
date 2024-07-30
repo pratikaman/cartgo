@@ -1,9 +1,11 @@
 import 'package:cartgo/constants/app_sizes.dart';
 import 'package:cartgo/constants/colors.dart';
 import 'package:cartgo/routing/app_router.dart';
-import 'package:cartgo/submit_button.dart';
+import 'package:cartgo/shared_components/snack_bar.dart';
+import 'package:cartgo/shared_components/submit_button.dart';
 import 'package:cartgo/utils/email_password_validator.dart';
 import 'package:cartgo/utils/string_validators.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +24,8 @@ class _LoginScreenState extends State<LoginScreen>
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  bool _isInProgress = false;
 
   @override
   void dispose() {
@@ -108,10 +112,13 @@ class _LoginScreenState extends State<LoginScreen>
 
               ///
               SubmitBtn(
-                  text: "Login",
-                  onPressed: () {
-                    context.goNamed(AppRoute.home.name);
-                  }),
+                text: "Login",
+                isInProgress: _isInProgress,
+                onPressed: () {
+                  // context.goNamed(AppRoute.home.name);
+                  signIn();
+                },
+              ),
 
               ///
               Container(
@@ -144,5 +151,31 @@ class _LoginScreenState extends State<LoginScreen>
         ),
       ),
     );
+  }
+
+  Future<void> signIn() async {
+    if (!_loginFormKey.currentState!.validate()) return;
+
+    setState(() {
+      _isInProgress = true;
+    });
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+    } on FirebaseAuthException catch (e) {
+      debugPrint('Error: $e');
+
+      if (mounted) {
+        CustomSnackBar.show(
+          context,
+          message: '${e.message}',
+        );
+      }
+    }
+    setState(() {
+      _isInProgress = false;
+    });
   }
 }

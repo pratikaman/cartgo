@@ -1,9 +1,11 @@
 import 'package:cartgo/constants/app_sizes.dart';
 import 'package:cartgo/constants/colors.dart';
 import 'package:cartgo/routing/app_router.dart';
-import 'package:cartgo/submit_button.dart';
+import 'package:cartgo/shared_components/snack_bar.dart';
+import 'package:cartgo/shared_components/submit_button.dart';
 import 'package:cartgo/utils/email_password_validator.dart';
 import 'package:cartgo/utils/string_validators.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
@@ -25,6 +27,8 @@ class _SignUpScreenState extends State<SignUpScreen>
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  bool _isInProgress = false;
 
   @override
   void dispose() {
@@ -138,7 +142,13 @@ class _SignUpScreenState extends State<SignUpScreen>
               const Spacer(),
 
               ///
-              SubmitBtn(text: "Signup", onPressed: () {}),
+              SubmitBtn(
+                text: "Signup",
+                isInProgress: _isInProgress,
+                onPressed: () {
+                  signUp();
+                },
+              ),
 
               ///
               Container(
@@ -171,5 +181,46 @@ class _SignUpScreenState extends State<SignUpScreen>
         ),
       ),
     );
+  }
+
+  Future<void> signUp() async {
+    if (!_signUpFormKey.currentState!.validate()) return;
+
+    ///
+    setState(() {
+      _isInProgress = true;
+    });
+
+    ///
+    try {
+      UserCredential userCredential =
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+
+      // The user is now signed in, which will trigger authStateChanges
+      User? user = userCredential.user;
+
+      ///
+      if (user != null && mounted) {
+        context.goNamed(AppRoute.products.name);
+      }
+
+    } on FirebaseAuthException catch (e) {
+      debugPrint('Error: $e');
+
+      if (mounted) {
+        CustomSnackBar.show(
+          context,
+          message: '${e.message}',
+        );
+      }
+    }
+
+    ///
+    setState(() {
+      _isInProgress = false;
+    });
   }
 }
