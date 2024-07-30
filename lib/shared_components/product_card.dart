@@ -1,9 +1,12 @@
 import 'package:cartgo/constants/app_sizes.dart';
 import 'package:cartgo/constants/colors.dart';
-import 'package:cartgo/domain/product.dart';
+import 'package:cartgo/model/product.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
+
+/// A widget that displays a product card with image, title, 
+/// description, and price information
 class ProductCard extends StatelessWidget {
   const ProductCard(
       {super.key, required this.product, this.discountApplied = true});
@@ -11,6 +14,7 @@ class ProductCard extends StatelessWidget {
   final Product product;
   final bool discountApplied;
 
+  /// Calculate the final price based on whether a discount is applied
   double get price => discountApplied
       ? product.price - (product.price * product.discountPercentage / 100)
       : product.price;
@@ -26,7 +30,7 @@ class ProductCard extends StatelessWidget {
       child: Column(
         children: [
 
-          /// product image
+          /// Display the product image using CachedNetworkImage for efficient loading
           CachedNetworkImage(
             imageUrl: product.thumbnail,
             progressIndicatorBuilder: (context, url, downloadProgress) =>
@@ -34,7 +38,7 @@ class ProductCard extends StatelessWidget {
             errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
 
-          /// product name
+          /// product title
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
@@ -69,7 +73,7 @@ class ProductCard extends StatelessWidget {
           Row(
             children: [
 
-              /// product price
+              /// product original price
               Visibility(
                 visible: discountApplied,
                 child: Text(
@@ -88,7 +92,7 @@ class ProductCard extends StatelessWidget {
               ///
               gapW8,
 
-              /// price net price
+              /// final price (with discount applied if applicable)
               Text(
                 "\$${price.toStringAsFixed(2)}",
                 style: const TextStyle(

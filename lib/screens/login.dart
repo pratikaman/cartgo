@@ -20,11 +20,15 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen>
     with EmailAndPasswordValidators {
+
+  /// form key for form validation
   final _loginFormKey = GlobalKey<FormState>();
 
+  /// controllers for email and password text fields
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  /// flag to show loading state
   bool _isInProgress = false;
 
   @override
@@ -110,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen>
               ),
               const Spacer(),
 
-              ///
+              /// submit button
               SubmitBtn(
                 text: "Login",
                 isInProgress: _isInProgress,
@@ -120,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen>
                 },
               ),
 
-              ///
+              /// signup link
               Container(
                 margin: const EdgeInsets.only(top: Sizes.p12),
                 child: RichText(
@@ -155,16 +159,18 @@ class _LoginScreenState extends State<LoginScreen>
 
   Future<void> signIn() async {
 
-    ///
+    /// validate form inputs
     if (!_loginFormKey.currentState!.validate()) return;
 
-    ///
+    /// set progress flag
     setState(() {
       _isInProgress = true;
     });
 
     ///
     try {
+
+      /// sign in with email and password
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
@@ -172,6 +178,8 @@ class _LoginScreenState extends State<LoginScreen>
     } on FirebaseAuthException catch (e) {
       debugPrint('Error: $e');
 
+
+      /// show snackbar with error message
       if (mounted) {
         CustomSnackBar.show(
           context,
@@ -181,8 +189,8 @@ class _LoginScreenState extends State<LoginScreen>
     }
 
     ///
-    setState(() {
-      _isInProgress = false;
-    });
+    // setState(() {
+    //   _isInProgress = false;
+    // });
   }
 }

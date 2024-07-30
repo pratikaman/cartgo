@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-
+/// Colors used in the app
 const kPrimaryColor = Color(0xFF0C54BE);
 const kSecondaryColor = Color(0xFF303F60);
 

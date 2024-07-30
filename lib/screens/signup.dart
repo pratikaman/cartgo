@@ -20,14 +20,16 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen>
     with EmailAndPasswordValidators {
-  ///
+
+  /// form key for form validation
   final _signUpFormKey = GlobalKey<FormState>();
 
-  ///
+  /// controllers for email, password adn name text fields
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  /// flag to show loading state
   bool _isInProgress = false;
 
   @override
@@ -141,7 +143,7 @@ class _SignUpScreenState extends State<SignUpScreen>
               ),
               const Spacer(),
 
-              ///
+              /// submit button.
               SubmitBtn(
                 text: "Signup",
                 isInProgress: _isInProgress,
@@ -150,7 +152,7 @@ class _SignUpScreenState extends State<SignUpScreen>
                 },
               ),
 
-              ///
+              /// login link
               Container(
                 margin: const EdgeInsets.only(top: Sizes.p12),
                 child: RichText(
@@ -184,18 +186,20 @@ class _SignUpScreenState extends State<SignUpScreen>
   }
 
   Future<void> signUp() async {
+
+    /// validate form inputs
     if (!_signUpFormKey.currentState!.validate()) return;
 
-    ///
+    /// Set progress flag
     setState(() {
       _isInProgress = true;
     });
 
-    ///
+  
     try {
 
 
-      ///
+      /// create user with email and password
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
@@ -203,7 +207,7 @@ class _SignUpScreenState extends State<SignUpScreen>
       await FirebaseAuth.instance.signOut();
 
 
-      ///
+      /// show success message and navigate to home screen
       if (mounted) {
         CustomSnackBar.show(
           context,
@@ -215,6 +219,7 @@ class _SignUpScreenState extends State<SignUpScreen>
     } on FirebaseAuthException catch (e) {
       debugPrint('Error: $e');
 
+      /// show error message if registration fails
       if (mounted) {
         CustomSnackBar.show(
           context,
@@ -224,8 +229,8 @@ class _SignUpScreenState extends State<SignUpScreen>
     }
 
     ///
-    setState(() {
-      _isInProgress = false;
-    });
+    // setState(() {
+    //   _isInProgress = false;
+    // });
   }
 }

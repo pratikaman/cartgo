@@ -6,10 +6,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
 void main() async {
-  ///
+  /// ensure Flutter is initialized before proceeding
   WidgetsFlutterBinding.ensureInitialized();
 
-  ///
+  /// initialize Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -33,6 +33,8 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: kBackgoundColor,
         textTheme: GoogleFonts.poppinsTextTheme(Theme.of(context).textTheme),
       ),
+
+      /// routing configuration
       routerConfig: router,
     );
   }
