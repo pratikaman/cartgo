@@ -1,3 +1,4 @@
+import 'package:cartgo/controllers/auth_controller.dart';
 import 'package:cartgo/constants/app_sizes.dart';
 import 'package:cartgo/constants/colors.dart';
 import 'package:cartgo/routing/app_router.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -20,7 +22,6 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen>
     with EmailAndPasswordValidators {
-
   /// form key for form validation
   final _loginFormKey = GlobalKey<FormState>();
 
@@ -28,8 +29,6 @@ class _LoginScreenState extends State<LoginScreen>
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  /// flag to show loading state
-  bool _isInProgress = false;
 
   @override
   void dispose() {
@@ -115,12 +114,15 @@ class _LoginScreenState extends State<LoginScreen>
               const Spacer(),
 
               /// submit button
-              SubmitBtn(
-                text: "Login",
-                isInProgress: _isInProgress,
-                onPressed: () {
-                  // context.goNamed(AppRoute.home.name);
-                  signIn();
+              Consumer<AuthenticationController>(
+                builder: (BuildContext context, authProvider, _) {
+                  return SubmitBtn(
+                    text: "Login",
+                    isInProgress: authProvider.isLoginInProgress,
+                    onPressed: () {
+                      signIn();
+                    },
+                  );
                 },
               ),
 
@@ -158,26 +160,18 @@ class _LoginScreenState extends State<LoginScreen>
   }
 
   Future<void> signIn() async {
-
     /// validate form inputs
     if (!_loginFormKey.currentState!.validate()) return;
 
-    /// set progress flag
-    setState(() {
-      _isInProgress = true;
-    });
-
     ///
     try {
-
-      /// sign in with email and password
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
+      ///
+      await Provider.of<AuthenticationController>(context, listen: false).signIn(
+          _emailController.text.trim(), _passwordController.text.trim());
     } on FirebaseAuthException catch (e) {
-      debugPrint('Error: $e');
 
+      ///
+      debugPrint('Error: $e');
 
       /// show snackbar with error message
       if (mounted) {
@@ -187,10 +181,5 @@ class _LoginScreenState extends State<LoginScreen>
         );
       }
     }
-
-    ///
-    // setState(() {
-    //   _isInProgress = false;
-    // });
   }
 }

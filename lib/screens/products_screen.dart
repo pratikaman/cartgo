@@ -1,13 +1,14 @@
 import 'dart:convert';
 
+import 'package:cartgo/controllers/auth_controller.dart';
 import 'package:cartgo/shared_components/product_card.dart';
 import 'package:cartgo/constants/app_sizes.dart';
 import 'package:cartgo/constants/colors.dart';
 import 'package:cartgo/model/product.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class ProductsScreen extends StatefulWidget {
   const ProductsScreen({super.key});
@@ -110,7 +111,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
             ),
             tooltip: "logout",
             onPressed: () {
-              FirebaseAuth.instance.signOut();
+              Provider.of<AuthenticationController>(context, listen: false).signOut();
             },
           ),
         ],

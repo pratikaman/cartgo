@@ -1,3 +1,4 @@
+import 'package:cartgo/controllers/auth_controller.dart';
 import 'package:cartgo/constants/app_sizes.dart';
 import 'package:cartgo/constants/colors.dart';
 import 'package:cartgo/routing/app_router.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -20,7 +22,6 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen>
     with EmailAndPasswordValidators {
-
   /// form key for form validation
   final _signUpFormKey = GlobalKey<FormState>();
 
@@ -30,7 +31,7 @@ class _SignUpScreenState extends State<SignUpScreen>
   final _passwordController = TextEditingController();
 
   /// flag to show loading state
-  bool _isInProgress = false;
+  // bool _isInProgress = false;
 
   @override
   void dispose() {
@@ -144,11 +145,15 @@ class _SignUpScreenState extends State<SignUpScreen>
               const Spacer(),
 
               /// submit button.
-              SubmitBtn(
-                text: "Signup",
-                isInProgress: _isInProgress,
-                onPressed: () {
-                  signUp();
+              Consumer<AuthenticationController>(
+                builder: (BuildContext context, authProvider, _) {
+                  return SubmitBtn(
+                    text: "Signup",
+                    isInProgress: authProvider.isSignUpInProgress,
+                    onPressed: () {
+                      signUp();
+                    },
+                  );
                 },
               ),
 
@@ -186,26 +191,20 @@ class _SignUpScreenState extends State<SignUpScreen>
   }
 
   Future<void> signUp() async {
-
     /// validate form inputs
     if (!_signUpFormKey.currentState!.validate()) return;
 
-    /// Set progress flag
-    setState(() {
-      _isInProgress = true;
-    });
-
-  
     try {
-
-
       /// create user with email and password
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
-      await FirebaseAuth.instance.signOut();
+      await Provider.of<AuthenticationController>(context, listen: false)
+          .signUp(
+              _emailController.text.trim(), _passwordController.text.trim());
 
+      ///
+      if (mounted) {
+        await Provider.of<AuthenticationController>(context, listen: false)
+            .signOut();
+      }
 
       /// show success message and navigate to home screen
       if (mounted) {
@@ -227,10 +226,5 @@ class _SignUpScreenState extends State<SignUpScreen>
         );
       }
     }
-
-    ///
-    // setState(() {
-    //   _isInProgress = false;
-    // });
   }
 }
